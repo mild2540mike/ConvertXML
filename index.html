@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.rawgit.com/abdmob/x2js/master/xml2json.js"
+    ></script>
+    <style>
+      body {
+        font-family: monospace;
+      }
+
+      #xmlToJSON {
+        margin-top: 20px;
+        line-height: 25px;
+      }
+
+      .content {
+          display:grid;
+          grid-template-columns: 1fr 15% 1fr;
+      }
+      .header {
+          display: grid;
+          grid-template-rows: 1fr;
+      }
+     .btnCenter {
+          display: grid;
+          grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+      }
+      @media only screen and (max-width: 1000px) {
+        .btnCenter {
+          display: grid;
+          grid-template-rows: 1fr 1fr 1fr 1fr;
+          margin-bottom: 10%;
+      }
+    }
+      @media only screen and (max-width: 864px) {
+        .content {
+          display:block;
+      }
+      .btnCenter {
+          display: flex;
+          flex-direction: column;
+          margin-top: 5%;
+      }
+      }
+      
+    </style>
+    <script>
+      $(document).ready(function () {
+        $("#xmlToJSON").click(function () {
+          var data = $("#xmlString").val();
+          var xmlData = "";
+          var xmlundefi = undefined;
+          var xmlinvalid = "Invalid XML";
+          if (data !== null && data.trim().length !== 0) {
+            try {
+              if ((xmlData = $.parseXML(data)));
+              if ((xmlundefi = $.parseXML(data)));
+              if ((xmlinvalid = $.parseXML(data)));
+            } catch (err) {
+              alert("Error Description : " + err );
+            }
+            var x2js = new X2JS();
+            var dataJson = x2js.xml2json(xmlData);
+            //   console.log(data.catalog.book, 'data');
+
+            clickjson(dataJson);
+          }
+        });
+      });
+
+      function clickjson(dataJson, e) {
+        if ((document.getElementById("JsonString").value = JSON.stringify(dataJson) && !undefined)) {
+            document.getElementById("JsonString").value = "<pre>" + JSON.stringify(dataJson, undefined, 2) + "</pre>";
+        } else {
+            document.getElementById("JsonString").value = "Please Choose file XML for Convert to JSON!";
+            document.getElementById("JsonString").disabled = true;
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <h2>
+      Convert XML to JSON -
+      <a href="#" target="_blank" rel="noopener noreferrer">MikeDev</a>
+    </h2>
+    <div class="content">
+        <div class="header">
+            <h4>XML:</h4>
+                <textarea id="xmlString" cols="55" rows="15" style="margin-right: 1%;"></textarea>
+        </div>
+            <div class="btnCenter">
+                <span></span>
+                <span></span>
+                <button id="xmlToJSON" onclick="clickjson()"><span style="font-size:2vmin">Convert XML to JSON</span></button>
+            </div>
+        <div class="header">
+            <h4>JSON:</h4>
+                <textarea id="JsonString" cols="55" rows="15"  style="margin-left: 1%;"></textarea>
+        </div>
+  </body>
+</html>
